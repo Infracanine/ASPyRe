@@ -1,0 +1,41 @@
+clingo version 5.4.0
+Reading from ...project_source/more_experimentation.lp
+Solving...
+Answer: 1
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0)
+Answer: 2
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(10,0,10,10)
+Answer: 3
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(10,10,0,10)
+Answer: 4
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(10,0,10,10) road(10,10,0,10)
+Answer: 5
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,10,0,0)
+Answer: 6
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(10,10,0,10) road(0,10,0,0)
+Answer: 7
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(10,0,10,10) road(0,10,0,0)
+Answer: 8
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(10,0,10,10) road(10,10,0,10) road(0,10,0,0)
+Answer: 9
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0)
+Answer: 10
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0) road(10,0,10,10)
+Answer: 11
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0) road(0,10,0,0)
+Answer: 12
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0) road(10,0,10,10) road(0,10,0,0)
+Answer: 13
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0) road(10,10,0,10)
+Answer: 14
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0) road(10,10,0,10) road(0,10,0,0)
+Answer: 15
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0) road(10,0,10,10) road(10,10,0,10)
+Answer: 16
+boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0) road(10,0,10,10) road(10,10,0,10) road(0,10,0,0)
+SATISFIABLE
+
+Models       : 16
+Calls        : 1
+Time         : 0.010s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.004s
