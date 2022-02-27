@@ -74,20 +74,20 @@ def render(drawing: draw.Drawing, answer_set: str, title: str):
             matches = re.findall(r"\d+", each)
             x1, y1, x2, y2 = int(matches[0]), int(matches[1]), int(matches[2]), int(matches[3])
             objects_list.append(("road", [x1, y1, x2, y2]))
-            print(f"Road at ({x1},{y1}) ({x2},{y2})")
+            # print(f"Road at ({x1},{y1}) ({x2},{y2})")
         elif re.match(boundary_pattern, each):
             matches = re.findall(r"\d+", each)
             x1, y1, x2, y2 = int(matches[0]), int(matches[1]), int(matches[2]), int(matches[3])
             objects_list.append(("boundary", [x1, y1, x2, y2]))
-            print(f"Boundary at ({x1},{y1}) ({x2},{y2})")
+            # print(f"Boundary at ({x1},{y1}) ({x2},{y2})")
         else:
             print(f"Unexpected atom pattern found! Pattern was {each}")
-    print(objects_list)
     # Center city on canvas by calculating centroid and adjusting position of elements in the answer set
     canvas_centroid = (canvas_width / 2, canvas_height / 2)
     summed_x = 0
     summed_y = 0
     points_count = 0
+    # TODO: Sort this so points in the same place do not both contribute to centroid calculation, thus resulting in wonky centralisation
     for city_obj_type, coordinates in objects_list:
         if city_obj_type == "road" or city_obj_type == "boundary":
             points_count += 2
@@ -108,6 +108,8 @@ def render(drawing: draw.Drawing, answer_set: str, title: str):
             drawing.append(draw.Line(coordinates[0] + x_adj, coordinates[1] + y_adj, coordinates[2] + x_adj, coordinates[3] + y_adj, stroke='red', stroke_width=2))
     title_font_size = canvas_height / 50
     drawing.append(draw.Text(title, fontSize=title_font_size, x=5, y=canvas_width - title_font_size))
+    drawing.append(draw.Text(answer_set, fontSize=9, x=10, y=10))
+    print(f"Rendered {title}")
     return drawing
 
 
@@ -159,13 +161,14 @@ def main(argv):
     dt = datetime.now().strftime("%d-%m-%Y-%H%M")
     directory = f"Output-{dt}"
     os.mkdir("outputs/" + directory)
-    number = 1
+    number = 0
     # Iterate through all identified answer sets and render that output
     for each in answer_sets:
+        number += 1
         d = draw.Drawing(canvas_width, canvas_height, origin=(0, 0))
         render(d, each, f"Answer Set {number}")
         d.savePng(f"outputs/{directory}/AnswerSet{number}.png")
-        number += 1
+    print(f"COMPLETE: Successfully rendered {number} answer sets!")
 
 
 if __name__ == '__main__':
