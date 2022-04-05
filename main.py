@@ -61,6 +61,11 @@ def extract_atoms(answer_set):
     return re.split("\s", answer_set.strip())
 
 
+# Do rendering in a better, object oriented way using a dictionary of objects mapping a regex to a
+def better_render(answer_set: str, title: str):
+    return
+
+
 def render(drawing: draw.Drawing, answer_set: str, title: str):
     drawing.append(draw.Rectangle(0, 0, canvas_width, canvas_height, fill="white"))
     drawing.setPixelScale(1)
@@ -108,7 +113,7 @@ def render(drawing: draw.Drawing, answer_set: str, title: str):
             drawing.append(draw.Line(coordinates[0] + x_adj, coordinates[1] + y_adj, coordinates[2] + x_adj, coordinates[3] + y_adj, stroke='red', stroke_width=2))
     title_font_size = canvas_height / 50
     drawing.append(draw.Text(title, fontSize=title_font_size, x=5, y=canvas_width - title_font_size))
-    drawing.append(draw.Text(answer_set, fontSize=9, x=10, y=10))
+    drawing.append(draw.Text("Atoms:" + answer_set.replace(" ", "\n"), fontSize=9, x=5, y=canvas_height*0.8))
     print(f"Rendered {title}")
     return drawing
 
@@ -157,18 +162,18 @@ def main(argv):
     print("----------------------------------")
     metadata, answer_sets = extract_answer_sets(input_contents)
     print(f"Extracted {len(answer_sets)} answer sets\n")
-    # Do Drawing (for the moment just render the first one)
+    # Calculate name of directory to store rendered artifacts in
     dt = datetime.now().strftime("%d-%m-%Y-%H%M")
     directory = f"Output-{dt}"
     os.mkdir("outputs/" + directory)
-    number = 0
+    answer_set_count = 0
     # Iterate through all identified answer sets and render that output
     for each in answer_sets:
-        number += 1
+        answer_set_count += 1
         d = draw.Drawing(canvas_width, canvas_height, origin=(0, 0))
-        render(d, each, f"Answer Set {number}")
-        d.savePng(f"outputs/{directory}/AnswerSet{number}.png")
-    print(f"COMPLETE: Successfully rendered {number} answer sets!")
+        render(d, each, f"Answer Set {answer_set_count}")
+        d.savePng(f"outputs/{directory}/AnswerSet{answer_set_count}.png")
+    print(f"COMPLETE: Successfully rendered {answer_set_count} answer sets!")
 
 
 if __name__ == '__main__':
