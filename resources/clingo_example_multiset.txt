@@ -1,41 +1,413 @@
 clingo version 5.4.0
-Reading from ...project_source/more_experimentation.lp
+Reading from ...ct/project_source/temporal_approach.lp
 Solving...
 Answer: 1
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,0,100,0)
 Answer: 2
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(10,0,10,10)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,100,100,100)
 Answer: 3
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(10,10,0,10)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,0,0,0)
 Answer: 4
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(10,0,10,10) road(10,10,0,10)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,100,0,100)
 Answer: 5
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,10,0,0)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,99,100,99)
 Answer: 6
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(10,10,0,10) road(0,10,0,0)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,1,100,1)
 Answer: 7
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(10,0,10,10) road(0,10,0,0)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,1,0,1)
 Answer: 8
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(10,0,10,10) road(10,10,0,10) road(0,10,0,0)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,99,0,99)
 Answer: 9
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,98,100,98)
 Answer: 10
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0) road(10,0,10,10)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,2,100,2)
 Answer: 11
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0) road(0,10,0,0)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,2,0,2)
 Answer: 12
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0) road(10,0,10,10) road(0,10,0,0)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,98,0,98)
 Answer: 13
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0) road(10,10,0,10)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,97,100,97)
 Answer: 14
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0) road(10,10,0,10) road(0,10,0,0)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,3,100,3)
 Answer: 15
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0) road(10,0,10,10) road(10,10,0,10)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,3,0,3)
 Answer: 16
-boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0) road(0,0,10,0) road(10,0,10,10) road(10,10,0,10) road(0,10,0,0)
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,97,0,97)
+Answer: 17
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,96,100,96)
+Answer: 18
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,4,100,4)
+Answer: 19
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,96,0,96)
+Answer: 20
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,4,0,4)
+Answer: 21
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,95,100,95)
+Answer: 22
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,5,100,5)
+Answer: 23
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,74,100,74)
+Answer: 24
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,75,100,75)
+Answer: 25
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,38,0,38)
+Answer: 26
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,76,100,76)
+Answer: 27
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,77,100,77)
+Answer: 28
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,39,0,39)
+Answer: 29
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,70,0,70)
+Answer: 30
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,78,100,78)
+Answer: 31
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,79,100,79)
+Answer: 32
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,40,0,40)
+Answer: 33
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,80,100,80)
+Answer: 34
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,81,100,81)
+Answer: 35
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,41,0,41)
+Answer: 36
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,71,0,71)
+Answer: 37
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,86,0,86)
+Answer: 38
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,82,100,82)
+Answer: 39
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,83,100,83)
+Answer: 40
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,42,0,42)
+Answer: 41
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,84,100,84)
+Answer: 42
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,85,100,85)
+Answer: 43
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,43,0,43)
+Answer: 44
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,72,0,72)
+Answer: 45
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,86,100,86)
+Answer: 46
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,87,100,87)
+Answer: 47
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,44,0,44)
+Answer: 48
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,88,100,88)
+Answer: 49
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,89,100,89)
+Answer: 50
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,45,0,45)
+Answer: 51
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,73,0,73)
+Answer: 52
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,87,0,87)
+Answer: 53
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,90,100,90)
+Answer: 54
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,91,100,91)
+Answer: 55
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,46,0,46)
+Answer: 56
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,92,100,92)
+Answer: 57
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,93,100,93)
+Answer: 58
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,47,0,47)
+Answer: 59
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,74,0,74)
+Answer: 60
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,94,100,94)
+Answer: 61
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,48,0,48)
+Answer: 62
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,49,0,49)
+Answer: 63
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,75,0,75)
+Answer: 64
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,88,0,88)
+Answer: 65
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,50,0,50)
+Answer: 66
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,51,0,51)
+Answer: 67
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,76,0,76)
+Answer: 68
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,52,0,52)
+Answer: 69
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,6,100,6)
+Answer: 70
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,7,100,7)
+Answer: 71
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,8,100,8)
+Answer: 72
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,9,100,9)
+Answer: 73
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,5,0,5)
+Answer: 74
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,53,0,53)
+Answer: 75
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,77,0,77)
+Answer: 76
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,89,0,89)
+Answer: 77
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,94,0,94)
+Answer: 78
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,10,100,10)
+Answer: 79
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,11,100,11)
+Answer: 80
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,6,0,6)
+Answer: 81
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,12,100,12)
+Answer: 82
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,13,100,13)
+Answer: 83
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,7,0,7)
+Answer: 84
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,54,0,54)
+Answer: 85
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,14,100,14)
+Answer: 86
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,15,100,15)
+Answer: 87
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,8,0,8)
+Answer: 88
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,16,100,16)
+Answer: 89
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,17,100,17)
+Answer: 90
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,9,0,9)
+Answer: 91
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,55,0,55)
+Answer: 92
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,78,0,78)
+Answer: 93
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,18,100,18)
+Answer: 94
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,19,100,19)
+Answer: 95
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,10,0,10)
+Answer: 96
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,20,100,20)
+Answer: 97
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,21,100,21)
+Answer: 98
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,11,0,11)
+Answer: 99
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,56,0,56)
+Answer: 100
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,22,100,22)
+Answer: 101
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,23,100,23)
+Answer: 102
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,12,0,12)
+Answer: 103
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,24,100,24)
+Answer: 104
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,25,100,25)
+Answer: 105
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,13,0,13)
+Answer: 106
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,57,0,57)
+Answer: 107
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,79,0,79)
+Answer: 108
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,90,0,90)
+Answer: 109
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,26,100,26)
+Answer: 110
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,27,100,27)
+Answer: 111
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,14,0,14)
+Answer: 112
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,28,100,28)
+Answer: 113
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,29,100,29)
+Answer: 114
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,15,0,15)
+Answer: 115
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,58,0,58)
+Answer: 116
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,30,100,30)
+Answer: 117
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,31,100,31)
+Answer: 118
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,16,0,16)
+Answer: 119
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,32,100,32)
+Answer: 120
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,33,100,33)
+Answer: 121
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,17,0,17)
+Answer: 122
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,59,0,59)
+Answer: 123
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,80,0,80)
+Answer: 124
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,34,100,34)
+Answer: 125
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,35,100,35)
+Answer: 126
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,18,0,18)
+Answer: 127
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,36,100,36)
+Answer: 128
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,37,100,37)
+Answer: 129
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,19,0,19)
+Answer: 130
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,60,0,60)
+Answer: 131
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,38,100,38)
+Answer: 132
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,39,100,39)
+Answer: 133
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,20,0,20)
+Answer: 134
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,40,100,40)
+Answer: 135
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,41,100,41)
+Answer: 136
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,21,0,21)
+Answer: 137
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,61,0,61)
+Answer: 138
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,81,0,81)
+Answer: 139
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,91,0,91)
+Answer: 140
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,42,100,42)
+Answer: 141
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,43,100,43)
+Answer: 142
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,22,0,22)
+Answer: 143
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,44,100,44)
+Answer: 144
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,45,100,45)
+Answer: 145
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,23,0,23)
+Answer: 146
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,62,0,62)
+Answer: 147
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,46,100,46)
+Answer: 148
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,47,100,47)
+Answer: 149
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,24,0,24)
+Answer: 150
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,48,100,48)
+Answer: 151
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,49,100,49)
+Answer: 152
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,25,0,25)
+Answer: 153
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,63,0,63)
+Answer: 154
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,82,0,82)
+Answer: 155
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,50,100,50)
+Answer: 156
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,51,100,51)
+Answer: 157
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,26,0,26)
+Answer: 158
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,52,100,52)
+Answer: 159
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,53,100,53)
+Answer: 160
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,27,0,27)
+Answer: 161
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,64,0,64)
+Answer: 162
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,54,100,54)
+Answer: 163
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,55,100,55)
+Answer: 164
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,28,0,28)
+Answer: 165
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,56,100,56)
+Answer: 166
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,57,100,57)
+Answer: 167
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,29,0,29)
+Answer: 168
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,65,0,65)
+Answer: 169
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,83,0,83)
+Answer: 170
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,58,100,58)
+Answer: 171
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,59,100,59)
+Answer: 172
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,30,0,30)
+Answer: 173
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,60,100,60)
+Answer: 174
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,61,100,61)
+Answer: 175
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,31,0,31)
+Answer: 176
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,66,0,66)
+Answer: 177
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,62,100,62)
+Answer: 178
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,63,100,63)
+Answer: 179
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,32,0,32)
+Answer: 180
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,64,100,64)
+Answer: 181
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,65,100,65)
+Answer: 182
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,33,0,33)
+Answer: 183
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,67,0,67)
+Answer: 184
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,84,0,84)
+Answer: 185
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,66,100,66)
+Answer: 186
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,67,100,67)
+Answer: 187
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,34,0,34)
+Answer: 188
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,68,100,68)
+Answer: 189
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,69,100,69)
+Answer: 190
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,35,0,35)
+Answer: 191
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,68,0,68)
+Answer: 192
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,70,100,70)
+Answer: 193
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,71,100,71)
+Answer: 194
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,36,0,36)
+Answer: 195
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,72,100,72)
+Answer: 196
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(0,73,100,73)
+Answer: 197
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,37,0,37)
+Answer: 198
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,69,0,69)
+Answer: 199
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,85,0,85)
+Answer: 200
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,92,0,92)
+Answer: 201
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,93,0,93)
+Answer: 202
+boundary(0,0,100,0) boundary(100,0,100,100) boundary(100,100,0,100) boundary(0,100,0,0) road(100,95,0,95)
 SATISFIABLE
 
-Models       : 16
+Models       : 202
 Calls        : 1
-Time         : 0.010s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.004s
+Time         : 0.111s (Solving: 0.01s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.109s
