@@ -7,7 +7,7 @@ import os.path
 import re
 import inspect
 import mylogging as mylogs
-
+import time
 
 canvas_width: int = 500
 canvas_height: int = 500
@@ -202,6 +202,7 @@ def main(argv):
     os.mkdir(directory)
     answer_set_count = 0
     # Iterate through all identified answer sets and render that output
+    start_time = time.time()
     for each in answer_sets:
         answer_set_count += 1
         d = draw.Drawing(canvas_width, canvas_height, origin=(0, 0))
@@ -210,7 +211,9 @@ def main(argv):
         full_path = f"{directory}/AnswerSet{answer_set_count}.png"
         mylogs.log(f"Saved {subtitle} to '{full_path}'")
         d.savePng(full_path)
-    mylogs.log(f"COMPLETE: Successfully rendered {answer_set_count} answer sets!")
+    execution_time = time.time() - start_time
+    # Print time to 5 significant figures
+    mylogs.log(f"COMPLETE: Successfully rendered {answer_set_count} answer sets in {float('%.5g' % execution_time)} seconds!")
 
 
 if __name__ == '__main__':
