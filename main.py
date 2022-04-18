@@ -82,6 +82,7 @@ def render_answer_set(drawing: draw.Drawing, answer_set: str, title: str, scalin
     mylogs.log(f"Raw Clingo string to render: {answer_set}")
     atoms = extract_atoms(answer_set)
     mylogs.log(f"Identified {len(atoms)} atoms, performing pre-processing.")
+    atoms_and_orders = []
     # Calculate centroid of all mapped atoms
     for atom in atoms:
         matched = False
@@ -92,29 +93,25 @@ def render_answer_set(drawing: draw.Drawing, answer_set: str, title: str, scalin
                 # Store points in a set for later centroid calculation
                 for point in atom_dict[pattern].get_points(matches):
                     points_set.add(point)
+                atoms_and_orders.append([atom, atom_dict[pattern], matches])
                 matched = True
                 break
         if not matched:
-            atoms.remove(atom)
             mylogs.log(f"Unmapped atom pattern found! Pattern was {atom}")
     # Perform adjustment calculation
     centroid_x, centroid_y = calculate_centroid(list(points_set))
     x_adj = canvas_centroid[0] - centroid_x
     y_adj = canvas_centroid[1] - centroid_y
 
+    # Sort atoms prior to processing based on order
+    atoms_and_orders.sort(key=lambda x: x[1].get_order())
     # Draw all atoms on canvas
-    for atom in atoms:
-        for pattern in atom_dict.keys():
-            # Maybe implement something so we don't have to perform matching a second time
-            if re.match(pattern, atom):
-                # Convert matches to integers
-                matches = [int(x) * scaling for x in re.findall(r"\d+", atom)]
-                svg_object = atom_dict[pattern].draw(matches, x_adj, y_adj)
-                drawing.append(svg_object)
-                break
+    for each in atoms_and_orders:
+        atom, atom_class, matches = each[0], each[1], each[2]
+        svg_object = atom_class.draw(matches, x_adj, y_adj)
+        drawing.append(svg_object)
     drawing.append(draw.Text(title, fontSize=title_font_size, x=5, y=canvas_width - title_font_size))
     drawing.append(draw.Text("Atoms:" + answer_set.replace(" ", "\n"), fontSize=9, x=5, y=canvas_height * 0.8))
-    mylogs.log(f"Rendered {title}")
     return drawing
 
 
@@ -208,9 +205,10 @@ def main(argv):
     for each in answer_sets:
         answer_set_count += 1
         d = draw.Drawing(canvas_width, canvas_height, origin=(0, 0))
-        render_answer_set(d, each, f"Answer Set {answer_set_count}", scaling=RENDER_SCALING)
+        subtitle = f"Answer Set {answer_set_count}"
+        render_answer_set(d, each, subtitle, scaling=RENDER_SCALING)
         full_path = f"{directory}/AnswerSet{answer_set_count}.png"
-        mylogs.log(f"Attempting to save artefact to '{full_path}'")
+        mylogs.log(f"Saved {subtitle} to '{full_path}'")
         d.savePng(full_path)
     mylogs.log(f"COMPLETE: Successfully rendered {answer_set_count} answer sets!")
 
