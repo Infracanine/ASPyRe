@@ -6,6 +6,8 @@ import getopt
 import os.path
 import re
 import inspect
+import mylogging as mylogs
+
 
 canvas_width: int = 500
 canvas_height: int = 500
@@ -13,6 +15,7 @@ canvas_centroid = (canvas_width / 2, canvas_height / 2)
 title_font_size = canvas_height / 50
 body_font_size = title_font_size * 0.8
 PIXEL_SCALE = 1
+RENDER_SCALING = 10
 
 boundary_pattern: str = r"boundary\(\d*,\d*,\d*,\d*\)"
 road_pattern: str = r"road\(\d*,\d*,\d*,\d*\)"
@@ -36,7 +39,7 @@ atom_dict = dict()
 
 
 def load_atoms():
-    print("Loading defined atoms from Atoms module.")
+    mylogs.log("Loading defined atoms from Atoms module.")
     for name, obj in inspect.getmembers(Atoms):
         if obj is not Atoms.Atom and isinstance(obj, type) and issubclass(obj, Atoms.Atom):
             instance = obj()
@@ -69,23 +72,23 @@ def calculate_centroid(render_points: list):
 
 
 # Do rendering in a better, object oriented way using a dictionary of objects mapping a regex to <something>
-def render_answer_set(drawing: draw.Drawing, answer_set: str, title: str):
+def render_answer_set(drawing: draw.Drawing, answer_set: str, title: str, scaling: int = 1):
     # Draw background of image
     drawing.append(draw.Rectangle(0, 0, canvas_width, canvas_height, fill="white"))
     drawing.setPixelScale(PIXEL_SCALE)
     # Create objects list for pre-processing purposes
     points_set = set()
 
-    print(f"Raw Clingo string to render: {answer_set}")
+    mylogs.log(f"Raw Clingo string to render: {answer_set}")
     atoms = extract_atoms(answer_set)
-    print(f"Identified {len(atoms)} atoms, performing pre-processing.")
+    mylogs.log(f"Identified {len(atoms)} atoms, performing pre-processing.")
     # Calculate centroid of all mapped atoms
     for atom in atoms:
         matched = False
         for pattern in atom_dict.keys():
             if re.match(pattern, atom):
                 # Extract all numbers and convert to int
-                matches = [int(x) for x in re.findall(r"\d+", atom)]
+                matches = [int(x) * scaling for x in re.findall(r"\d+", atom)]
                 # Store points in a set for later centroid calculation
                 for point in atom_dict[pattern].get_points(matches):
                     points_set.add(point)
@@ -93,7 +96,7 @@ def render_answer_set(drawing: draw.Drawing, answer_set: str, title: str):
                 break
         if not matched:
             atoms.remove(atom)
-            print(f"Unmapped atom pattern found! Pattern was {atom}")
+            mylogs.log(f"Unmapped atom pattern found! Pattern was {atom}")
     # Perform adjustment calculation
     centroid_x, centroid_y = calculate_centroid(list(points_set))
     x_adj = canvas_centroid[0] - centroid_x
@@ -105,19 +108,20 @@ def render_answer_set(drawing: draw.Drawing, answer_set: str, title: str):
             # Maybe implement something so we don't have to perform matching a second time
             if re.match(pattern, atom):
                 # Convert matches to integers
-                matches = [int(x) for x in re.findall(r"\d+", atom)]
+                matches = [int(x) * scaling for x in re.findall(r"\d+", atom)]
                 svg_object = atom_dict[pattern].draw(matches, x_adj, y_adj)
                 drawing.append(svg_object)
                 break
     drawing.append(draw.Text(title, fontSize=title_font_size, x=5, y=canvas_width - title_font_size))
     drawing.append(draw.Text("Atoms:" + answer_set.replace(" ", "\n"), fontSize=9, x=5, y=canvas_height * 0.8))
-    print(f"Rendered {title}")
+    mylogs.log(f"Rendered {title}")
     return drawing
 
 
+# Initial validation of parameters passed to command line tool
 def validate_parameters(input_param, output_param):
-    print(f'Input file is "{input_param}"')
-    print(f'Output directory is "{output_param}"')
+    mylogs.log(f'Input file is "{input_param}"')
+    mylogs.log(f'Output directory is "{output_param}"')
     if input_param == "" or not os.path.exists(input_param):
         raise IOError(f"Could not find input file '{input_param}'")
     if output_param == "" or not os.path.exists(output_param):
@@ -126,13 +130,12 @@ def validate_parameters(input_param, output_param):
 
 # Calculate name of directory to store rendered artifacts in
 def generate_directory_name():
-
     dt = datetime.now().strftime("%d-%m-%Y-%H%M")
     directory = f"outputs/Output-{dt}"
     # Handle case where we've already created a directory with this name.
     # Generally this happens if  we've executed pyviz twice in the same minute
     if os.path.exists(directory):
-        print("Default path already existed!")
+        mylogs.log("Default path already existed!")
         count = 1
         new_dir = f"{directory}[{count}]"
         while os.path.exists(new_dir):
@@ -168,11 +171,11 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "odir="])
     except getopt.GetoptError:
-        print('pyviz.py -i <inputfile> -o <outputdirectory>')
+        mylogs.log('pyviz.py -i <inputfile> -o <outputdirectory>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print('pyviz.py -i <inputfile> -o <outputdirectory>')
+            mylogs.log('pyviz.py -i <inputfile> -o <outputdirectory>')
             sys.exit()
         elif opt in ("-i", "--ifile"):
             input_file = arg
@@ -181,22 +184,22 @@ def main(argv):
     try:
         validate_parameters(input_file, output_file)
     except IOError as err:
-        print("IO error: {0}".format(err))
+        mylogs.log("IO error: {0}".format(err))
         return
     # Open file
     with open(input_file) as f:
         input_contents = f.read()
     if input_contents == "":
-        print("Input file was empty, exiting pyviz")
+        mylogs.log("Input file was empty, exiting pyviz")
         return
     # Load user defined Atom classes from atoms module
     load_atoms()
     # Validate input text file is correct format
-    print("------------Input file------------")
-    print(input_contents)
-    print("----------------------------------")
+    mylogs.log("------------Input file------------")
+    mylogs.log(input_contents)
+    mylogs.log("----------------------------------")
     metadata, answer_sets = extract_answer_sets(input_contents)
-    print(f"Extracted {len(answer_sets)} answer sets\n")
+    mylogs.log(f"Extracted {len(answer_sets)} answer sets\n")
     # Calculate name of directory to store rendered artifacts in
     directory = generate_directory_name()
     os.mkdir(directory)
@@ -205,11 +208,11 @@ def main(argv):
     for each in answer_sets:
         answer_set_count += 1
         d = draw.Drawing(canvas_width, canvas_height, origin=(0, 0))
-        render_answer_set(d, each, f"Answer Set {answer_set_count}")
+        render_answer_set(d, each, f"Answer Set {answer_set_count}", scaling=RENDER_SCALING)
         full_path = f"{directory}/AnswerSet{answer_set_count}.png"
-        print(f"Attempting to save artefact to {full_path}")
+        mylogs.log(f"Attempting to save artefact to '{full_path}'")
         d.savePng(full_path)
-    print(f"COMPLETE: Successfully rendered {answer_set_count} answer sets!")
+    mylogs.log(f"COMPLETE: Successfully rendered {answer_set_count} answer sets!")
 
 
 if __name__ == '__main__':
