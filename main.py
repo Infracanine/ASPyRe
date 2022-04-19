@@ -125,10 +125,10 @@ def validate_parameters(input_param, output_param):
         raise IOError(f"Could not find output dir '{output_param}'")
 
 
-# Calculate name of directory to store rendered artifacts in
-def generate_directory_name():
+# Determine name of directory to store rendered artifacts in
+def generate_directory_name(title: str, root_dir: str):
     dt = datetime.now().strftime("%d-%m-%Y-%H%M")
-    directory = f"outputs/Output-{dt}"
+    directory = f"{root_dir}/Output-{dt}"
     # Handle case where we've already created a directory with this name.
     # Generally this happens if  we've executed pyviz twice in the same minute
     if os.path.exists(directory):
@@ -147,7 +147,7 @@ Main Pyviz script for visualising the output of Clingo
 Accept the text output of a Clingo execution, typically something like:
 
     clingo version 5.4.0
-    Reading from ...project_source/more_experimentation.lp
+    Reading from ...project_source/experimentation.lp
     Solving...
     Answer: 1
     boundary(0,0,10,0) boundary(10,0,10,10) boundary(10,10,0,10) boundary(0,10,0,0)
@@ -164,22 +164,22 @@ And outputs pngs based on user defined classes in the Atoms module
 
 def main(argv):
     input_file = ''
-    output_file = ''
+    output_dir = ''
     try:
         opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "odir="])
     except getopt.GetoptError:
-        mylogs.log('pyviz.py -i <inputfile> -o <outputdirectory>')
+        print('pyviz.py -i <inputfile> -o <outputdirectory>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            mylogs.log('pyviz.py -i <inputfile> -o <outputdirectory>')
+            print('pyviz.py -i <inputfile> -o <outputdirectory>')
             sys.exit()
         elif opt in ("-i", "--ifile"):
             input_file = arg
         elif opt in ("-o", "--odir"):
-            output_file = arg
+            output_dir = arg
     try:
-        validate_parameters(input_file, output_file)
+        validate_parameters(input_file, output_dir)
     except IOError as err:
         mylogs.log("IO error: {0}".format(err))
         return
@@ -193,12 +193,13 @@ def main(argv):
     load_atoms()
     # Validate input text file is correct format
     mylogs.log("------------Input file------------")
+    print(f"Title = {input_file}")
     mylogs.log(input_contents)
     mylogs.log("----------------------------------")
     metadata, answer_sets = extract_answer_sets(input_contents)
     mylogs.log(f"Extracted {len(answer_sets)} answer sets\n")
     # Calculate name of directory to store rendered artifacts in
-    directory = generate_directory_name()
+    directory = generate_directory_name("", output_dir)
     os.mkdir(directory)
     answer_set_count = 0
     # Iterate through all identified answer sets and render that output
