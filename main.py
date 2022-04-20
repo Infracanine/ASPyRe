@@ -1,8 +1,8 @@
 from datetime import datetime
-import atoms.Atoms as Atoms
+import AtomSmasher.Atoms as Atoms
+import argparse
 import drawSvg as draw
 import sys
-import getopt
 import os.path
 import re
 import inspect
@@ -17,33 +17,22 @@ body_font_size = title_font_size * 0.8
 PIXEL_SCALE = 1
 RENDER_SCALING = 10
 
-boundary_pattern: str = r"boundary\(\d*,\d*,\d*,\d*\)"
-road_pattern: str = r"road\(\d*,\d*,\d*,\d*\)"
 # Dictionary mapping an atom's pattern to a corresponding SVG object
 atom_dict = dict()
 
-# #
-# # def create_environment():
-# #
-# def draw(output_file):
-#     # Origin is bottom left
-#     d = draw.Drawing(100, 100, origin=(0, 0), displayInline=False)
-#     d.append(draw.Rectangle(0, 0, 1000, 1000, fill="#378805"))
-#
-#     d.setPixelScale(1)
-#
-#     # Create some transport routes
-#     r = Road(0, 0, 40, 40)
-#
-#     d.savePng(output_file)
 
-
+# Atom loader, loads from
 def load_atoms():
     mylogs.log("Loading defined atoms from Atoms module.")
     for name, obj in inspect.getmembers(Atoms):
         if obj is not Atoms.Atom and isinstance(obj, type) and issubclass(obj, Atoms.Atom):
             instance = obj()
             atom_dict[instance.get_regex()] = instance
+
+
+def write_answer_set_log(raw_answer_set: str, directory: str):
+    with open(f'{directory}/raw_pyviz_input.txt', 'w') as f:
+        f.write(raw_answer_set)
 
 
 def extract_answer_sets(clingo_output: str) -> (str, list):
@@ -56,6 +45,7 @@ def extract_answer_sets(clingo_output: str) -> (str, list):
     return metadata, answer_sets
 
 
+# Split an answer set string into substrings representing individual atoms
 def extract_atoms(answer_set):
     return re.split("\s", answer_set.strip())
 
@@ -116,7 +106,7 @@ def render_answer_set(drawing: draw.Drawing, answer_set: str, title: str, scalin
 
 
 # Initial validation of parameters passed to command line tool
-def validate_parameters(input_param, output_param):
+def validate_io_parameters(input_param, output_param):
     mylogs.log(f'Input file is "{input_param}"')
     mylogs.log(f'Output directory is "{output_param}"')
     if input_param == "" or not os.path.exists(input_param):
@@ -128,9 +118,13 @@ def validate_parameters(input_param, output_param):
 # Determine name of directory to store rendered artifacts in
 def generate_directory_name(title: str, root_dir: str):
     dt = datetime.now().strftime("%d-%m-%Y-%H%M")
-    directory = f"{root_dir}/Output-{dt}"
+    directory = root_dir + "/"
+    if title != "":
+        directory += f"{title}-{dt}"
+    else:
+        directory += f"PyVizOutput-{dt}"
     # Handle case where we've already created a directory with this name.
-    # Generally this happens if  we've executed pyviz twice in the same minute
+    # Generally this happens if  we've executed pyviz multiple times in a short amount of time
     if os.path.exists(directory):
         mylogs.log("Default path already existed!")
         count = 1
@@ -139,7 +133,17 @@ def generate_directory_name(title: str, root_dir: str):
             count += 1
             new_dir = f"{directory}[{count}]"
         directory = new_dir
-    return directory
+    directory += "/"
+    return directory.replace(" ", "")
+
+
+def pyviz_parser_factory():
+    my_parser = argparse.ArgumentParser(prog="PyViz", description="PyViz, a tool for visualising Answer Sets produced by CLINGO")
+    my_parser.add_argument("input_file", type=str, help="Specify the input file for PyViz, which should be a .txt")
+    my_parser.add_argument("output_dir", type=str, help="Specify the directory to output artefacts.")
+    my_parser.add_argument("-t", "--title", type=str, help="Optional argument, specifying a title for the Answer Set being processed. This will be reflected in the name of the output folder created.")
+    my_parser.add_argument("-v", "--verbose", action='store_true', help="Configure verbosity of logging for PyViz")
+    return my_parser
 
 
 '''
@@ -163,23 +167,20 @@ And outputs pngs based on user defined classes in the Atoms module
 
 
 def main(argv):
-    input_file = ''
-    output_dir = ''
+    # Parse arguments
+    parser = pyviz_parser_factory()
+    args = parser.parse_args(argv)
+    input_file = args.input_file
+    output_dir = args.output_dir
+    raw_title = args.title
+    if raw_title is None:
+        raw_title = ""
+    title = "".join(raw_title.strip())
+    verbose = args.verbose
+    if verbose:
+        mylogs.log("Running in verbose mode!")
     try:
-        opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "odir="])
-    except getopt.GetoptError:
-        print('pyviz.py -i <inputfile> -o <outputdirectory>')
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-h':
-            print('pyviz.py -i <inputfile> -o <outputdirectory>')
-            sys.exit()
-        elif opt in ("-i", "--ifile"):
-            input_file = arg
-        elif opt in ("-o", "--odir"):
-            output_dir = arg
-    try:
-        validate_parameters(input_file, output_dir)
+        validate_io_parameters(input_file, output_dir)
     except IOError as err:
         mylogs.log("IO error: {0}".format(err))
         return
@@ -192,26 +193,29 @@ def main(argv):
     # Load user defined Atom classes from atoms module
     load_atoms()
     # Validate input text file is correct format
-    mylogs.log("------------Input file------------")
-    print(f"Title = {input_file}")
-    mylogs.log(input_contents)
-    mylogs.log("----------------------------------")
     metadata, answer_sets = extract_answer_sets(input_contents)
     mylogs.log(f"Extracted {len(answer_sets)} answer sets\n")
+
     # Calculate name of directory to store rendered artifacts in
-    directory = generate_directory_name("", output_dir)
+    directory = generate_directory_name(title, output_dir)
     os.mkdir(directory)
-    answer_set_count = 0
-    # Iterate through all identified answer sets and render that output
+    write_answer_set_log(raw_answer_set=input_contents, directory=directory)
+
     start_time = time.time()
+    # Iterate through all identified answer sets and render that output
+    answer_set_count = 0
     for each in answer_sets:
         answer_set_count += 1
         d = draw.Drawing(canvas_width, canvas_height, origin=(0, 0))
-        subtitle = f"Answer Set {answer_set_count}"
+        subtitle = ""
+        if raw_title != "":
+            subtitle += (raw_title + " ")
+        subtitle += f"Answer Set {answer_set_count}"
         render_answer_set(d, each, subtitle, scaling=RENDER_SCALING)
-        full_path = f"{directory}/AnswerSet{answer_set_count}.png"
+        full_path = f"{directory}AnswerSet{answer_set_count}.png"
         mylogs.log(f"Saved {subtitle} to '{full_path}'")
         d.savePng(full_path)
+
     execution_time = time.time() - start_time
     # Print time to 5 significant figures
     mylogs.log(f"COMPLETE: Successfully rendered {answer_set_count} answer sets in {float('%.5g' % execution_time)} seconds!")
