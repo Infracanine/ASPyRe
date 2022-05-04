@@ -30,11 +30,13 @@ def load_atoms():
             atom_dict[instance.get_regex()] = instance
 
 
+# Stores a copy of the answer set input file alongside generated artefacts
 def write_answer_set_log(raw_answer_set: str, directory: str):
     with open(f'{directory}/raw_pyviz_input.txt', 'w') as f:
         f.write(raw_answer_set)
 
 
+# Extract individual answers sets from raw text output of Clingo
 def extract_answer_sets(clingo_output: str) -> (str, list):
     if "SATISFIABLE" not in clingo_output:
         raise Exception("Received non-satisfiable answer set.")
@@ -79,7 +81,7 @@ def render_answer_set(drawing: draw.Drawing, answer_set: str, title: str, scalin
         for pattern in atom_dict.keys():
             if re.match(pattern, atom):
                 # Extract all numbers and convert to int
-                matches = [int(x) * scaling for x in re.findall(r"\d+", atom)]
+                matches = atom_dict[pattern].get_args(atom, scaling)
                 # Store points in a set for later centroid calculation
                 for point in atom_dict[pattern].get_points(matches):
                     points_set.add(point)
@@ -125,6 +127,7 @@ def generate_directory_name(title: str, root_dir: str):
         directory += f"PyVizOutput-{dt}"
     # Handle case where we've already created a directory with this name.
     # Generally this happens if  we've executed pyviz multiple times in a short amount of time
+    directory = directory.replace(" ", "")
     if os.path.exists(directory):
         mylogs.log("Default path already existed!")
         count = 1
@@ -133,14 +136,15 @@ def generate_directory_name(title: str, root_dir: str):
             count += 1
             new_dir = f"{directory}[{count}]"
         directory = new_dir
-    directory += "/"
-    return directory.replace(" ", "")
+    return directory + "/"
 
 
 def pyviz_parser_factory():
     my_parser = argparse.ArgumentParser(prog="PyViz", description="PyViz, a tool for visualising Answer Sets produced by CLINGO")
     my_parser.add_argument("input_file", type=str, help="Specify the input file for PyViz, which should be a .txt")
     my_parser.add_argument("output_dir", type=str, help="Specify the directory to output artefacts.")
+    my_parser.add_argument("-W", "--artefact_width", type=int, help="Specify the width of the canvases images generated")
+    my_parser.add_argument("-H", "--artefact_height", type=int, help="Specify the height of the canvases images generated")
     my_parser.add_argument("-t", "--title", type=str, help="Optional argument, specifying a title for the Answer Set being processed. This will be reflected in the name of the output folder created.")
     my_parser.add_argument("-v", "--verbose", action='store_true', help="Configure verbosity of logging for PyViz")
     return my_parser
@@ -166,24 +170,7 @@ And outputs pngs based on user defined classes in the Atoms module
 '''
 
 
-def main(argv):
-    # Parse arguments
-    parser = pyviz_parser_factory()
-    args = parser.parse_args(argv)
-    input_file = args.input_file
-    output_dir = args.output_dir
-    raw_title = args.title
-    if raw_title is None:
-        raw_title = ""
-    title = "".join(raw_title.strip())
-    verbose = args.verbose
-    if verbose:
-        mylogs.log("Running in verbose mode!")
-    try:
-        validate_io_parameters(input_file, output_dir)
-    except IOError as err:
-        mylogs.log("IO error: {0}".format(err))
-        return
+def process_clingo_file(input_file: str, output_dir: str, title: str):
     # Open file
     with open(input_file) as f:
         input_contents = f.read()
@@ -207,9 +194,8 @@ def main(argv):
     for each in answer_sets:
         answer_set_count += 1
         d = draw.Drawing(canvas_width, canvas_height, origin=(0, 0))
-        subtitle = ""
-        if raw_title != "":
-            subtitle += (raw_title + " ")
+        subtitle = (title + " ") if title != "" else ""
+
         subtitle += f"Answer Set {answer_set_count}"
         render_answer_set(d, each, subtitle, scaling=RENDER_SCALING)
         full_path = f"{directory}AnswerSet{answer_set_count}.png"
@@ -219,6 +205,27 @@ def main(argv):
     execution_time = time.time() - start_time
     # Print time to 5 significant figures
     mylogs.log(f"COMPLETE: Successfully rendered {answer_set_count} answer sets in {float('%.5g' % execution_time)} seconds!")
+
+
+def main(argv):
+    # Parse arguments
+    parser = pyviz_parser_factory()
+    args = parser.parse_args(argv)
+    input_file = args.input_file
+    output_dir = args.output_dir
+    raw_title = args.title
+    if raw_title is None:
+        raw_title = ""
+    title = "".join(raw_title.strip())
+    verbose = args.verbose
+    if verbose:
+        mylogs.log("Running in verbose mode!")
+    try:
+        validate_io_parameters(input_file, output_dir)
+    except IOError as err:
+        mylogs.log("IO error: {0}".format(err))
+        return
+    process_clingo_file(input_file = input_file, output_dir = output_dir, title = raw_title)
 
 
 if __name__ == '__main__':
