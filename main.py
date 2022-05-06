@@ -64,7 +64,7 @@ def calculate_centroid(render_points: list):
 
 
 # Do rendering in a better, object oriented way using a dictionary of objects mapping a regex to <something>
-def render_answer_set(drawing: draw.Drawing, answer_set: str, title: str, scaling: int = 1):
+def render_answer_set(drawing: draw.Drawing, answer_set: str, title: str, scaling: int = 1, render_atom_text = False):
     # Draw background of image
     drawing.append(draw.Rectangle(0, 0, canvas_width, canvas_height, fill="white"))
     drawing.setPixelScale(PIXEL_SCALE)
@@ -103,7 +103,8 @@ def render_answer_set(drawing: draw.Drawing, answer_set: str, title: str, scalin
         svg_object = atom_class.draw(matches, x_adj, y_adj)
         drawing.append(svg_object)
     drawing.append(draw.Text(title, fontSize=title_font_size, x=5, y=canvas_width - title_font_size))
-    drawing.append(draw.Text("Atoms:" + answer_set.replace(" ", "\n"), fontSize=9, x=5, y=canvas_height * 0.8))
+    if render_atom_text:
+        drawing.append(draw.Text("Atoms:" + answer_set.replace(" ", "\n"), fontSize=9, x=5, y=canvas_height * 0.8))
     return drawing
 
 
@@ -143,8 +144,9 @@ def pyviz_parser_factory():
     my_parser = argparse.ArgumentParser(prog="PyViz", description="PyViz, a tool for visualising Answer Sets produced by CLINGO")
     my_parser.add_argument("input_file", type=str, help="Specify the input file for PyViz, which should be a .txt")
     my_parser.add_argument("output_dir", type=str, help="Specify the directory to output artefacts.")
-    my_parser.add_argument("-W", "--artefact_width", type=int, help="Specify the width of the canvases images generated")
-    my_parser.add_argument("-H", "--artefact_height", type=int, help="Specify the height of the canvases images generated")
+    my_parser.add_argument("-W", "--canvas_width", type=int, help="Specify the width of the canvases images generated")
+    my_parser.add_argument("-H", "--canvas_height", type=int, help="Specify the height of the canvases images generated")
+    my_parser.add_argument("-a", "--show_atom_text", action='store_true', help="Set if you wish to show the string representation of atoms rendered alongside each corresponding artefact.")
     my_parser.add_argument("-t", "--title", type=str, help="Optional argument, specifying a title for the Answer Set being processed. This will be reflected in the name of the output folder created.")
     my_parser.add_argument("-v", "--verbose", action='store_true', help="Configure verbosity of logging for PyViz")
     return my_parser
@@ -170,7 +172,7 @@ And outputs pngs based on user defined classes in the Atoms module
 '''
 
 
-def process_clingo_file(input_file: str, output_dir: str, title: str):
+def process_clingo_file(input_file: str, output_dir: str, title: str, render_atom_text: bool):
     # Open file
     with open(input_file) as f:
         input_contents = f.read()
@@ -197,7 +199,7 @@ def process_clingo_file(input_file: str, output_dir: str, title: str):
         subtitle = (title + " ") if title != "" else ""
 
         subtitle += f"Answer Set {answer_set_count}"
-        render_answer_set(d, each, subtitle, scaling=RENDER_SCALING)
+        render_answer_set(d, each, subtitle, scaling=RENDER_SCALING, render_atom_text=render_atom_text)
         full_path = f"{directory}AnswerSet{answer_set_count}.png"
         mylogs.log(f"Saved {subtitle} to '{full_path}'")
         d.savePng(full_path)
@@ -206,7 +208,7 @@ def process_clingo_file(input_file: str, output_dir: str, title: str):
     # Print time to 5 significant figures
     mylogs.log(f"COMPLETE: Successfully rendered {answer_set_count} answer sets in {float('%.5g' % execution_time)} seconds!")
 
-
+# Main function, primarily concerned with argument parsing for the command line tool, and feeding these to our process clingo file
 def main(argv):
     # Parse arguments
     parser = pyviz_parser_factory()
@@ -214,6 +216,7 @@ def main(argv):
     input_file = args.input_file
     output_dir = args.output_dir
     raw_title = args.title
+    render_atom_text = args.show_atom_text
     if raw_title is None:
         raw_title = ""
     title = "".join(raw_title.strip())
@@ -225,7 +228,7 @@ def main(argv):
     except IOError as err:
         mylogs.log("IO error: {0}".format(err))
         return
-    process_clingo_file(input_file = input_file, output_dir = output_dir, title = raw_title)
+    process_clingo_file(input_file=input_file, output_dir=output_dir, title=raw_title, render_atom_text=render_atom_text)
 
 
 if __name__ == '__main__':
