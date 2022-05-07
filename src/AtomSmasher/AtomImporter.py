@@ -16,6 +16,7 @@ def format_file_name(file_str: str):
         output = output.replace(".py","")
     return output
 
+
 class AtomImporter:
     def __init__(self, logger: MyLogger):
         self.logger = logger
@@ -30,14 +31,7 @@ class AtomImporter:
         for name, obj in inspect.getmembers(atoms_module):
             if obj is not Atoms.Atom and isinstance(obj, type) and issubclass(obj, Atoms.Atom):
                 instance = obj()
-                logger.log(f"Successfully loaded Atom {name}")
+                self.logger.log(f"Successfully loaded Atom {name}")
                 return_dict[instance.get_regex()] = instance
         self.logger.log(f"Completed Atom mapping import successfully! Loaded {len(return_dict)} Atoms.")
         return return_dict
-
-    # def validate(self, ):
-
-logger = MyLogger()
-importer = AtomImporter(logger)
-
-importer.load_atoms("resources.MyAtoms")
