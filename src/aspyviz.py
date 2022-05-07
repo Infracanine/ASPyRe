@@ -1,14 +1,17 @@
 from datetime import datetime
-import AtomSmasher.Atoms as Atoms
+import src.AtomSmasher.Atoms as Atoms
+from src.AtomSmasher.AtomImporter import AtomImporter
 import argparse
 import drawSvg as draw
-import sys
 import os.path
 import re
 import inspect
+import sys
+from importlib import import_module
 import mylogging as mylogs
 import time
 
+# Statics
 canvas_width: int = 500
 canvas_height: int = 500
 canvas_centroid = (canvas_width / 2, canvas_height / 2)
@@ -17,17 +20,8 @@ body_font_size = title_font_size * 0.8
 PIXEL_SCALE = 1
 RENDER_SCALING = 10
 
-# Dictionary mapping an atom's pattern to a corresponding SVG object
-atom_dict = dict()
-
-
-# Atom loader, loads from
-def load_atoms():
-    mylogs.log("Loading defined atoms from Atoms module.")
-    for name, obj in inspect.getmembers(Atoms):
-        if obj is not Atoms.Atom and isinstance(obj, type) and issubclass(obj, Atoms.Atom):
-            instance = obj()
-            atom_dict[instance.get_regex()] = instance
+# Instantiate logger
+logger = mylogs.MyLogger()
 
 
 # Stores a copy of the answer set input file alongside generated artefacts
@@ -64,16 +58,16 @@ def calculate_centroid(render_points: list):
 
 
 # Do rendering in a better, object oriented way using a dictionary of objects mapping a regex to <something>
-def render_answer_set(drawing: draw.Drawing, answer_set: str, title: str, scaling: int = 1, render_atom_text = False):
+def render_answer_set(atom_dict: dict, drawing: draw.Drawing, answer_set: str, title: str, scaling: int = 1, render_atom_text = False, ):
     # Draw background of image
     drawing.append(draw.Rectangle(0, 0, canvas_width, canvas_height, fill="white"))
     drawing.setPixelScale(PIXEL_SCALE)
     # Create objects list for pre-processing purposes
     points_set = set()
 
-    mylogs.log(f"Raw Clingo string to render: {answer_set}")
+    logger.log(f"Raw Clingo string to render: {answer_set}")
     atoms = extract_atoms(answer_set)
-    mylogs.log(f"Identified {len(atoms)} atoms, performing pre-processing.")
+    logger.log(f"Identified {len(atoms)} atoms, performing pre-processing.")
     atoms_and_orders = []
     # Calculate centroid of all mapped atoms
     for atom in atoms:
@@ -89,7 +83,7 @@ def render_answer_set(drawing: draw.Drawing, answer_set: str, title: str, scalin
                 matched = True
                 break
         if not matched:
-            mylogs.log(f"Unmapped atom pattern found! Pattern was {atom}")
+            logger.log(f"Unmapped atom pattern found! Pattern was {atom}")
     # Perform adjustment calculation
     centroid_x, centroid_y = calculate_centroid(list(points_set))
     x_adj = canvas_centroid[0] - centroid_x
@@ -110,8 +104,8 @@ def render_answer_set(drawing: draw.Drawing, answer_set: str, title: str, scalin
 
 # Initial validation of parameters passed to command line tool
 def validate_io_parameters(input_param, output_param):
-    mylogs.log(f'Input file is "{input_param}"')
-    mylogs.log(f'Output directory is "{output_param}"')
+    logger.log(f'Input file is "{input_param}"')
+    logger.log(f'Output directory is "{output_param}"')
     if input_param == "" or not os.path.exists(input_param):
         raise IOError(f"Could not find input file '{input_param}'")
     if output_param == "" or not os.path.exists(output_param):
@@ -130,7 +124,7 @@ def generate_directory_name(title: str, root_dir: str):
     # Generally this happens if  we've executed pyviz multiple times in a short amount of time
     directory = directory.replace(" ", "")
     if os.path.exists(directory):
-        mylogs.log("Default path already existed!")
+        logger.log("Default path already existed!")
         count = 1
         new_dir = f"{directory}[{count}]"
         while os.path.exists(new_dir):
@@ -144,6 +138,7 @@ def pyviz_parser_factory():
     my_parser = argparse.ArgumentParser(prog="PyViz", description="PyViz, a tool for visualising Answer Sets produced by CLINGO")
     my_parser.add_argument("input_file", type=str, help="Specify the input file for PyViz, which should be a .txt")
     my_parser.add_argument("output_dir", type=str, help="Specify the directory to output artefacts.")
+    my_parser.add_argument("mapping_file", type=str, help="Specify Python file containing atom mappings.")
     my_parser.add_argument("-W", "--canvas_width", type=int, help="Specify the width of the canvases images generated")
     my_parser.add_argument("-H", "--canvas_height", type=int, help="Specify the height of the canvases images generated")
     my_parser.add_argument("-a", "--show_atom_text", action='store_true', help="Set if you wish to show the string representation of atoms rendered alongside each corresponding artefact.")
@@ -172,18 +167,16 @@ And outputs pngs based on user defined classes in the Atoms module
 '''
 
 
-def process_clingo_file(input_file: str, output_dir: str, title: str, render_atom_text: bool):
+def process_clingo_file(atom_dict: dict, input_file: str, output_dir: str, title: str, render_atom_text: bool):
     # Open file
     with open(input_file) as f:
         input_contents = f.read()
     if input_contents == "":
-        mylogs.log("Input file was empty, exiting pyviz")
+        logger.log("Input file was empty, exiting pyviz")
         return
-    # Load user defined Atom classes from atoms module
-    load_atoms()
     # Validate input text file is correct format
     metadata, answer_sets = extract_answer_sets(input_contents)
-    mylogs.log(f"Extracted {len(answer_sets)} answer sets\n")
+    logger.log(f"Extracted {len(answer_sets)} answer sets\n")
 
     # Calculate name of directory to store rendered artifacts in
     directory = generate_directory_name(title, output_dir)
@@ -199,14 +192,15 @@ def process_clingo_file(input_file: str, output_dir: str, title: str, render_ato
         subtitle = (title + " ") if title != "" else ""
 
         subtitle += f"Answer Set {answer_set_count}"
-        render_answer_set(d, each, subtitle, scaling=RENDER_SCALING, render_atom_text=render_atom_text)
+        render_answer_set(drawing=d, answer_set=each, title=subtitle, atom_dict=atom_dict, scaling=RENDER_SCALING, render_atom_text=render_atom_text)
         full_path = f"{directory}AnswerSet{answer_set_count}.png"
-        mylogs.log(f"Saved {subtitle} to '{full_path}'")
+        logger.log(f"Saved {subtitle} to '{full_path}'")
         d.savePng(full_path)
 
     execution_time = time.time() - start_time
     # Print time to 5 significant figures
-    mylogs.log(f"COMPLETE: Successfully rendered {answer_set_count} answer sets in {float('%.5g' % execution_time)} seconds!")
+    logger.log(f"COMPLETE: Successfully rendered {answer_set_count} answer sets in {float('%.5g' % execution_time)} seconds!")
+
 
 # Main function, primarily concerned with argument parsing for the command line tool, and feeding these to our process clingo file
 def main(argv):
@@ -215,21 +209,25 @@ def main(argv):
     args = parser.parse_args(argv)
     input_file = args.input_file
     output_dir = args.output_dir
+    mapping_file = args.mapping_file
     raw_title = args.title
     render_atom_text = args.show_atom_text
     if raw_title is None:
         raw_title = ""
-    title = "".join(raw_title.strip())
     verbose = args.verbose
     if verbose:
-        mylogs.log("Running in verbose mode!")
+        logger.log("Running in verbose mode!")
     try:
         validate_io_parameters(input_file, output_dir)
     except IOError as err:
-        mylogs.log("IO error: {0}".format(err))
+        logger.log("IO error: {0}".format(err))
         return
-    process_clingo_file(input_file=input_file, output_dir=output_dir, title=raw_title, render_atom_text=render_atom_text)
+    atomimporter = AtomImporter(logger)
+    atom_dict = atomimporter.load_atoms(mapping_file)
+    process_clingo_file(atom_dict=atom_dict, input_file=input_file, output_dir=output_dir, title=raw_title, render_atom_text=render_atom_text,)
 
+def validate_user_mappings_file():
+    first_line = "from src.AtomSmasher.Atoms import Atom"
 
 if __name__ == '__main__':
     main(sys.argv[1:])
