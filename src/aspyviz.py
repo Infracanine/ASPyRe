@@ -44,14 +44,18 @@ def extract_atoms(model):
 
 
 # Calculate the approximate center of the artefact
-def calculate_centroid(render_points: list):
+def calculate_image_center(render_points: list):
     xs = []
     ys = []
     for x, y in render_points:
         xs.append(x)
         ys.append(y)
-    x_centroid = sum(xs) / len(xs)
-    y_centroid = sum(ys) / len(ys)
+    min_x = min(xs)
+    max_x = max(xs)
+    min_y = min(ys)
+    max_y = max(ys)
+    x_centroid = (min_x + max_x) / 2
+    y_centroid = (min_y + max_y) / 2
     return x_centroid, y_centroid
 
 
@@ -82,7 +86,7 @@ def render_model(atom_dict: dict, drawing: draw.Drawing, answer_set: str, title:
         if not matched:
             logger.log(f"Unmapped atom pattern found! Pattern was {atom}")
     # Perform adjustment calculation
-    centroid_x, centroid_y = calculate_centroid(list(points_set))
+    centroid_x, centroid_y = calculate_image_center(list(points_set))
     x_adj = canvas_centroid[0] - centroid_x
     y_adj = canvas_centroid[1] - centroid_y
 
@@ -240,7 +244,7 @@ def main(argv):
     os.mkdir(render_directory)
     metadata, models = parse_clingo_output_file(input_file, render_directory)
     # Render models
-    render_models(models, output_dir, atom_dict, render_atom_text, raw_title)
+    render_models(models, render_directory, atom_dict, render_atom_text, raw_title)
 
     # Print time to 5 significant figures
 
