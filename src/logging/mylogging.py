@@ -9,8 +9,8 @@ class LogLevels(Enum):
     ERROR = 2
 
 
-class MyLogger():
-    def log(self, message: str):
+class MyLogger:
+    def log(self, message: str, log_loc = "PyViz"):
         now = datetime.now()
-        print(f"{now.strftime('%d-%m-%Y-%H:%M:%S')}|PyViz|{message} ")
+        print(f"{now.strftime('%d-%m-%Y-%H:%M:%S')}|{log_loc}|{message} ")
 

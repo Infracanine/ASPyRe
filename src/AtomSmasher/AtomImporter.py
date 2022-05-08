@@ -1,6 +1,6 @@
 from importlib import import_module
 from src.AtomSmasher import Atoms
-from src.mylogging import MyLogger
+from src.logging.mylogging import MyLogger
 import inspect
 
 
@@ -13,7 +13,7 @@ def format_file_name(file_str: str):
     if "/" in file_str:
         output = output.replace("/", ".")
     if ".py" in output:
-        output = output.replace(".py","")
+        output = output.replace(".py", "")
     return output
 
 
@@ -23,15 +23,14 @@ class AtomImporter:
     # Load atoms from user inputted file
 
     def load_atoms(self, atoms_file: str):
-        self.logger.log(f"Attempting to load atoms from {atoms_file}.")
+        self.logger.log(f"Attempting to load atoms from {atoms_file}.", "AtomImporter")
         atoms_file = format_file_name(atoms_file)
-        print(atoms_file)
         return_dict = dict()
         atoms_module = import_user_mappings(atoms_file)
         for name, obj in inspect.getmembers(atoms_module):
             if obj is not Atoms.Atom and isinstance(obj, type) and issubclass(obj, Atoms.Atom):
                 instance = obj()
-                self.logger.log(f"Successfully loaded Atom {name}")
+                self.logger.log(f"Successfully loaded Atom {name}", "AtomImporter")
                 return_dict[instance.get_regex()] = instance
-        self.logger.log(f"Completed Atom mapping import successfully! Loaded {len(return_dict)} Atoms.")
+        self.logger.log(f"Completed Atom mapping import successfully! Loaded {len(return_dict)} Atoms.",  "AtomImporter")
         return return_dict
